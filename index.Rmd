@@ -4,6 +4,26 @@ site: distill::distill_website
 listing: posts
 ---
 
-# Headline
+# Arthur Gailes
 
-Some default text
+Strong quantitative researcher impacts policy through insightful data analyses, crafting interactive visuals to translate complex data sets into digestible mediums. Creative problem solver and cross-functional collaborator with drive to uncover trends and truths hidden among datasets. Highly proficient programmer fluent in R, Python, and SQL. Possess ancillary skills in writing, training, public speaking, and management developed over early career.
+
+This site will eventually host examples of my professional work.
+
+## Published Work
+
+**Interactive Maps**
+
+* California Tax Credit Allocation Committee:
+  + [2021 Opportunity Map](https://belonging.berkeley.edu/2021-tcac-opportunity-map)
+  + [2020 Opportunity Map](https://belonging.berkeley.edu/tcac-opportunity-map-2020)
+  + [2019 Opportunity Map](https://haasinstitute.berkeley.edu/sites/default/files/mappings/TCAC/opportunity_map_2019.html)
+* [Bay Area Segreation Map](https://belonging.berkeley.edu/bay-segregation-map)
+
+**Co-Author:**
+
+* [Bay Area Zoning Report: Characteristics of Exclusionary Communities](https://belonging.berkeley.edu/single-family-zoning-san-francisco-bay-area)
+* Racial Segregation in the San Francisco Bay Area
+  + [Part 3: Measuring Segregation](https://haasinstitute.berkeley.edu/racial-segregation-san-francisco-bay-area-part-3)
+  + [Part 4: The Harmful Effects of Segregation](https://haasinstitute.berkeley.edu/racial-segregation-san-francisco-bay-area-part-4)
+  + [Part 5: Remedies, Solutions, and Targets](https://belonging.berkeley.edu/racial-segregation-san-francisco-bay-area-part-5)
