@@ -16,6 +16,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+sapply(c('sf','leaflet'), require, character.only=T)
 ```
 
 Distill is a publication format for scientific and technical writing, native to the web.
