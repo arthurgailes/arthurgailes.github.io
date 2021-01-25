@@ -3,9 +3,9 @@ title: "Some maps or something"
 description: |
   A short description of the post.
 author:
-  - name: Nora Jones
+  - name: Arthur Gailes
     url: https://example.com/norajones
-date: 01-09-2021
+date: 01-25-2021
 categories: 
   - tests
 output:
