@@ -13,8 +13,8 @@
       "title": "Arthur Gailes",
       "author": [],
       "contents": "\nArthur Gailes\nStrong quantitative researcher impacts policy through insightful data analyses, crafting interactive visuals to translate complex data sets into digestible mediums. Creative problem solver and cross-functional collaborator with drive to uncover trends and truths hidden among datasets. Highly proficient programmer fluent in R, Python, and SQL. Possess ancillary skills in writing, training, public speaking, and management developed over early career.\nThis site will eventually host examples of my professional work.\nPublished Work\nInteractive Maps\nCalifornia Tax Credit Allocation Committee:\n2021 Opportunity Map\n2020 Opportunity Map\n2019 Opportunity Map\n\nBay Area Segreation Map\nCo-Author:\nBay Area Zoning Report: Characteristics of Exclusionary Communities\nRacial Segregation in the San Francisco Bay Area\nPart 3: Measuring Segregation\nPart 4: The Harmful Effects of Segregation\nPart 5: Remedies, Solutions, and Targets\n\n",
-      "last_modified": "2021-01-24T22:57:58-08:00"
+      "last_modified": "2021-01-25T16:29:49-08:00"
     }
   ],
-  "collections": ["posts/posts.json"]
+  "collections": ["posts/posts.json", "tidytuesday/tidytuesday.json"]
 }
