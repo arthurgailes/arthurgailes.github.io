@@ -10,10 +10,12 @@ output:
   distill::distill_article:
     self_contained: false
 categories:
+    - tidytuesday
     - visualizations
     - sf
     - ggplot2
     - maps
+preview: kenya_county_size.gif
 ---
 
 

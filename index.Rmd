@@ -6,7 +6,7 @@ listing: posts
 
 # Arthur Gailes
 
-Strong quantitative researcher impacts policy through insightful data analyses, crafting interactive visuals to translate complex data sets into digestible mediums. Creative problem solver and cross-functional collaborator with drive to uncover trends and truths hidden among datasets. Highly proficient programmer fluent in R, Python, and SQL. Possess ancillary skills in writing, training, public speaking, and management developed over early career.
+Strong quantitative researcher who impacts policy through insightful data analyses, crafting interactive visuals to translate complex data sets into digestible mediums. Creative problem solver and cross-functional collaborator with drive to uncover trends and truths hidden among datasets. Highly proficient programmer fluent in R, Python, and SQL. Possess ancillary skills in writing, training, public speaking, and management developed over early career.
 
 This site will eventually host examples of my professional work.
 
