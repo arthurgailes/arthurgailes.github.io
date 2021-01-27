@@ -1,0 +1,174 @@
+---
+title: "tidytuesday"
+description: |
+  A short description of the post.
+author:
+  - name: Arthur Gailes
+    url: {}
+date: 01-26-2021
+output:
+  distill::distill_article:
+    self_contained: false
+draft: true
+---
+
+
+A quick demonstration of affline transformations with the Kenya Census
+
+## Data Source
+
+Thanks as always to the [TidyTuesday crew at R4DS](https://github.com/rfordatascience/tidytuesday).
+
+The data this week comes from [Break Free from Plastic courtesy of Sarah Sauve.](https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-01-26/readme.md)
+
+
+# Load the weekly Data
+
+
+```{r setup, resutls='hide', message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=F)
+sapply(c('tidyverse','tidytuesdayR','here','ggplot2','ggthemes','sf', 'r2d3',
+  'gganimate'), require, character.only=T)
+# knitr::opts_knit$set(root.dir = here())
+```
+
+```{r Readme, eval = interactive(), include=FALSE}
+tt <- tt_load("2021-01-26")
+tt
+
+
+tt %>% 
+  map(glimpse)
+```
+
+
+Dowload the weekly data and make available in the `tt` object. Use the rKenyaCensus to do so, adding the polygons for each county.
+
+```{r download, eval=FALSE}
+plastic <- tt_load("2021-01-26")$plastic
+write_csv(plastic, 'plastic.csv')
+```
+
+
+After saving, load from the directory directly:
+
+```{r Load}
+plastic <- read_csv('plastic.csv')
+
+```
+
+
+# Glimpse Data
+
+Take an initial look at the format of the data available.
+
+
+```{r}
+head(plastic)
+
+```
+
+
+# Wrangle
+
+Transform to long by recycling code:
+```{r}
+plast_reduce <- plastic %>% 
+  filter(year==2020, !parent_company %in% c('Unbranded','null','NULL')) %>% 
+  select(country, parent_company, grand_total) %>% 
+  # get the total for each company by country
+  group_by(country, parent_company) %>% 
+  summarize(grand_total = sum(grand_total, na.rm=T), .groups='drop_last') %>% 
+  # keep only the top company in each country
+  filter(grand_total == max(grand_total)) %>% ungroup() %>% 
+  arrange(desc(grand_total))
+
+head(plast_reduce)
+```
+
+There are `r length(unique(plast_reduce$parent_company))` total companies in the `r nrow(plast_reduce)` countries listed.
+
+```{r Wrangle}
+centroids <- counties %>% st_geometry %>% 
+  st_transform(3857) %>% st_centroid %>% st_transform(4326)
+
+county_form <- transmute(counties, county=tools::toTitleCase(County), population=as.numeric(Population), 
+  pop_scale=scales::rescale(population, c(0.01,1)), centroid = centroids, type='Colored'
+  ) %>% st_set_crs(4326)
+
+# shift sizes around centroids
+county_size <- mutate(county_form, geometry = (geometry-centroid)*pop_scale+centroid,
+  type='Sized') %>% st_set_crs(4326) 
+
+# replicate the original shape with NA for population so the color fill can animate
+county_blank <- mutate(county_form, population = NA, type='Default')
+
+# bind together for gganimate so I can switch between fill states
+county_anim <- bind_rows(county_blank, county_form, county_size) %>% 
+  mutate(type = factor(type, c("Default",'Colored','Sized')))
+```
+
+
+## TODO
+Download one logo
+Download county shapefiles
+download country xwalk
+Try to use it in d3 map
+Download all logos if true, if false, dl top ~10 logos
+* might also want top polluting countries if using cartogram/bubble map
+create spreadsheet of companies + logo paths
+Create pollution map
+# Visualization
+
+## Spatial Data
+
+Load global countries geojson (downloaded from https://geojson-maps.ash.ms/).
+```{r}
+geo <- st_read('world_countries.geo.json') %>% 
+  st_transform(3857) 
+
+# create centroids
+geo_cen <- st_centroid(geo)
+```
+
+
+Visualization
+```{r}
+r2d3(data=geo_cen, script='plasticMap.js', css='plasticMap.css', dep='topojson.js')
+```
+
+
+How is Kenya's population distributed across counties? Resize the polygons from 1% to 100% of original size based on the population size. Gif included at the top; this is the code that generated it.
+
+```{r narrow_data, eval=FALSE}
+anim <- ggplot(county_anim) +
+  geom_sf(aes(fill=population)) +
+  # animation specs
+  transition_states(
+    type, transition_length=1, state_length = 2
+  )+
+  ease_aes('cubic-in-out')+
+  enter_fade()+
+  # back to ggplot; add counties with no fill so outlines stay consistent
+  geom_sf(data=counties, fill=NA) +
+  scale_fill_steps(n.breaks=4, low="#bdc9e1", high="#045a8d", labels=scales::comma,
+    guide='legend', trans='log10') +
+  labs(title="Kenya's Counties", fill='Population') +
+  theme_map() +
+  theme(
+    title=element_text(size=16, color='black')
+  )
+  
+animate(anim, nframes = 20)
+
+```
+
+
+# Save
+```{r eval=FALSE}
+anim_save('_tidytuesday/2021-01-19-tidy-tuesday/kenya_county_size.gif', anim)
+```
+
+# Review
+
+An obvious limitation to this approach is that a polygon can only go up to 100% of its original size without exceeding its original boundaries. In this map, the smallest county has the largest population, so the visual impact of the shifts is really messy. A possible cleanup strategy would be to make the original polygons to make them smaller, and so that the population-scaled polygons could increase to fit to the original boundaries.
