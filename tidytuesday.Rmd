@@ -1,5 +1,0 @@
----
-title: "TidyTuesday Gallery"
-site: distill::distill_website
-listing: tidytuesday
----
