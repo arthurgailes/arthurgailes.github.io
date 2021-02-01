@@ -25,12 +25,16 @@ The data this week comes from [Break Free from Plastic courtesy of Sarah Sauve.]
 # Load the weekly Data
 
 
-```{r setup, resutls='hide', message=FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message=F)
 sapply(c('tidyverse','tidytuesdayR','here','ggplot2','ggthemes','sf', 'r2d3',
   'gganimate'), require, character.only=T)
-# knitr::opts_knit$set(root.dir = here())
+# distill seems to use the project directory rather than the file directory.
+knitr::opts_knit$set(root.dir = paste0(here(),'/_posts/2021-01-26-tidytuesday/'))
+# setwd is not canonical, but works for me for some reason.
+setwd(paste0(here(),'/_posts/2021-01-26-tidytuesday/'))
 ```
+
 
 ```{r Readme, eval = interactive(), include=FALSE}
 tt <- tt_load("2021-01-26")
@@ -79,7 +83,7 @@ plast_reduce <- plastic %>%
   # get the total for each company by country
   group_by(country, parent_company) %>% 
   summarize(grand_total = sum(grand_total, na.rm=T), .groups='drop_last') %>% 
-  # keep only the top company in each country
+  # keep only the top company in eac h country
   filter(grand_total == max(grand_total)) %>% ungroup() %>% 
   arrange(desc(grand_total))
 
@@ -87,27 +91,6 @@ head(plast_reduce)
 ```
 
 There are `r length(unique(plast_reduce$parent_company))` total companies in the `r nrow(plast_reduce)` countries listed.
-
-```{r Wrangle}
-centroids <- counties %>% st_geometry %>% 
-  st_transform(3857) %>% st_centroid %>% st_transform(4326)
-
-county_form <- transmute(counties, county=tools::toTitleCase(County), population=as.numeric(Population), 
-  pop_scale=scales::rescale(population, c(0.01,1)), centroid = centroids, type='Colored'
-  ) %>% st_set_crs(4326)
-
-# shift sizes around centroids
-county_size <- mutate(county_form, geometry = (geometry-centroid)*pop_scale+centroid,
-  type='Sized') %>% st_set_crs(4326) 
-
-# replicate the original shape with NA for population so the color fill can animate
-county_blank <- mutate(county_form, population = NA, type='Default')
-
-# bind together for gganimate so I can switch between fill states
-county_anim <- bind_rows(county_blank, county_form, county_size) %>% 
-  mutate(type = factor(type, c("Default",'Colored','Sized')))
-```
-
 
 ## TODO
 Download one logo
@@ -124,45 +107,76 @@ Create pollution map
 
 Load global countries geojson (downloaded from https://geojson-maps.ash.ms/).
 ```{r}
-geo <- st_read('world_countries.geo.json') %>% 
-  st_transform(3857) 
+geo <- st_read('world_countries.geo.json') 
 
 # create centroids
-geo_cen <- st_centroid(geo)
+geo_cen <- st_centroid(st_transform(geo, 3857))
+
+
 ```
 
 
-Visualization
+##Visualization 
+
+It's at this point, where, if you've worked with d3 before, that you might think, "Arthur, you sweet, simple fool. D3 isn't goint to natively work with a completely unrelated R package." Well, hold on to your butts!
+
+
+#### Step 1: Get a global map
 ```{r}
-r2d3(data=geo_cen, script='plasticMap.js', css='plasticMap.css', dep='topojson.js')
+step1 <- r2d3(data=geo, script='plasticMap_step1.js', viewer='external')
+
+step1
+```
+
+Not the prettiest map, but we're going somewhere. Now, I want to see if I can replace a polygon with an image.
+
+```{r}
+# load table of company images
+logos <- read_csv('company_logos.csv')
+
+# join with country geographies and remove extra information
+geo_logo <- geo %>% 
+  select(name, name2=admin, name_long, pop_est, gdp_md_est) %>% 
+  mutate(name_id = tolower(name), name_id = gsub(' ','_',name_id)) %>% 
+  left_join(plast_reduce, by = c('name'='country')) %>% 
+  # 60 of 63 countries join. Leaving that alone for now
+  left_join(logos, by=c('parent_company'='company'))
+
+head(geo_logo)
 ```
 
 
-How is Kenya's population distributed across counties? Resize the polygons from 1% to 100% of original size based on the population size. Gif included at the top; this is the code that generated it.
+#### Step 2: Place an image in the map polygons
 
-```{r narrow_data, eval=FALSE}
-anim <- ggplot(county_anim) +
-  geom_sf(aes(fill=population)) +
-  # animation specs
-  transition_states(
-    type, transition_length=1, state_length = 2
-  )+
-  ease_aes('cubic-in-out')+
-  enter_fade()+
-  # back to ggplot; add counties with no fill so outlines stay consistent
-  geom_sf(data=counties, fill=NA) +
-  scale_fill_steps(n.breaks=4, low="#bdc9e1", high="#045a8d", labels=scales::comma,
-    guide='legend', trans='log10') +
-  labs(title="Kenya's Counties", fill='Population') +
-  theme_map() +
-  theme(
-    title=element_text(size=16, color='black')
-  )
-  
-animate(anim, nframes = 20)
+Next, test to see if I can replace a polygon with an image.
 
+(I tried to link this image locally, but failed. After playing with `htmlDependency` for far too long, I gave up and just added logos to the github repository.)
+```{r}
+# geo_test <- filter(geo_logo, parent_company == 'Universal Robina Corporation') %>% 
+#   # create id for image
+#   mutate(imageId = paste0('d3-', gsub(' ','', parent_company)))
+
+r2d3(data=geo, script='plasticMap_step2.js', viewer='external')
 ```
 
+Harumph. The code works, but r2d3 doesn't want to play nicely with my local images. After playing with `htmlDependency` for far too long, I gave up and just added logos to the github repository.
+
+Okay! Not great, but we've got a logo on top of a map.
+
+#### Step 3: Get the logo to show by country.
+```{r}
+# geo_test <- filter(geo_logo, parent_company == 'Universal Robina Corporation') %>% 
+#   # create id for image
+#   mutate(imageId = paste0('d3-', gsub(' ','', parent_company)))
+
+r2d3(data=geo_logo, script='plasticMap_step3.js', viewer='browser')
+```
+
+
+
+#### Step 4: Show all logos
+
+#### Step 5: Finishing Touches
 
 # Save
 ```{r eval=FALSE}
@@ -172,3 +186,13 @@ anim_save('_tidytuesday/2021-01-19-tidy-tuesday/kenya_county_size.gif', anim)
 # Review
 
 An obvious limitation to this approach is that a polygon can only go up to 100% of its original size without exceeding its original boundaries. In this map, the smallest county has the largest population, so the visual impact of the shifts is really messy. A possible cleanup strategy would be to make the original polygons to make them smaller, and so that the population-scaled polygons could increase to fit to the original boundaries.
+
+```{r}
+r2d3(data=matrix(round(runif(16, 1, 10000)), ncol = 4, nrow = 4), script="https://raw.githubusercontent.com/rstudio/r2d3/master/vignettes/gallery/chord/chord.js")
+```
+
+
+# Notes
+cartogram resize: https://observablehq.com/@d3/non-contiguous-cartogram
+fill svg: https://stackoverflow.com/questions/3796025/fill-svg-path-element-with-a-background-image
+  https://stackoverflow.com/questions/25881186/d3-fill-shape-with-image-using-pattern
