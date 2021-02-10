@@ -20,9 +20,9 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -32,16 +32,14 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -50,9 +48,9 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {   }
+  {  }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+a.sourceLine::before { text-decoration: underline; }
 }
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
@@ -86,38 +84,38 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
   <!--radix_placeholder_meta_tags-->
-<title>Arthur Gailes: Welcome to Arthur Gailes</title>
+<title>Arthur Gailes: Resizing Polygons by Population Using sf</title>
 
-<meta property="description" itemprop="description" content="Welcome to our new blog, Arthur Gailes. We hope you enjoy &#10;reading what we have to say!"/>
+<meta property="description" itemprop="description" content="January 19, 2021 &#10;Tidy Tuesday submission."/>
 
 
 <!--  https://schema.org/Article -->
-<meta property="article:published" itemprop="datePublished" content="2021-01-09"/>
-<meta property="article:created" itemprop="dateCreated" content="2021-01-09"/>
-<meta name="article:author" content="Nora Jones"/>
+<meta property="article:published" itemprop="datePublished" content="2021-01-25"/>
+<meta property="article:created" itemprop="dateCreated" content="2021-01-25"/>
+<meta name="article:author" content="Arthur Gailes"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-<meta property="og:title" content="Arthur Gailes: Welcome to Arthur Gailes"/>
+<meta property="og:title" content="Arthur Gailes: Resizing Polygons by Population Using sf"/>
 <meta property="og:type" content="article"/>
-<meta property="og:description" content="Welcome to our new blog, Arthur Gailes. We hope you enjoy &#10;reading what we have to say!"/>
+<meta property="og:description" content="January 19, 2021 &#10;Tidy Tuesday submission."/>
 <meta property="og:locale" content="en_US"/>
 <meta property="og:site_name" content="Arthur Gailes"/>
 
 <!--  https://dev.twitter.com/cards/types/summary -->
 <meta property="twitter:card" content="summary"/>
-<meta property="twitter:title" content="Arthur Gailes: Welcome to Arthur Gailes"/>
-<meta property="twitter:description" content="Welcome to our new blog, Arthur Gailes. We hope you enjoy &#10;reading what we have to say!"/>
+<meta property="twitter:title" content="Arthur Gailes: Resizing Polygons by Population Using sf"/>
+<meta property="twitter:description" content="January 19, 2021 &#10;Tidy Tuesday submission."/>
 
 <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Welcome to Arthur Gailes"]},{"type":"character","attributes":{},"value":["Welcome to our new blog, Arthur Gailes. We hope you enjoy \nreading what we have to say!"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url","affiliation","affiliation_url"]}},"value":[{"type":"character","attributes":{},"value":["Nora Jones"]},{"type":"character","attributes":{},"value":["https://example.com/norajones"]},{"type":"character","attributes":{},"value":["Spacely Sprockets"]},{"type":"character","attributes":{},"value":["https://example.com/spacelysprokets"]}]}]},{"type":"character","attributes":{},"value":["01-09-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","categories","preview"]}},"value":[{"type":"character","attributes":{},"value":["Resizing Polygons by Population Using sf"]},{"type":"character","attributes":{},"value":["January 19, 2021 \nTidy Tuesday submission."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Arthur Gailes"]}]}]},{"type":"character","attributes":{},"value":["01-25-2021"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"character","attributes":{},"value":["tidytuesday","visualizations","sf","ggplot2","maps"]},{"type":"character","attributes":{},"value":["kenya_county_size.gif"]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"NULL"}
+  {"type":"character","attributes":{},"value":["2021-01-19-tidy-tuesday_files/anchor-4.2.2/anchor.min.js","2021-01-19-tidy-tuesday_files/bowser-1.9.3/bowser.min.js","2021-01-19-tidy-tuesday_files/distill-2.2.21/template.v2.js","2021-01-19-tidy-tuesday_files/jquery-1.11.3/jquery.min.js","2021-01-19-tidy-tuesday_files/popper-2.6.0/popper.min.js","2021-01-19-tidy-tuesday_files/tippy-6.2.7/tippy-bundle.umd.min.js","2021-01-19-tidy-tuesday_files/tippy-6.2.7/tippy-light-border.css","2021-01-19-tidy-tuesday_files/tippy-6.2.7/tippy.css","2021-01-19-tidy-tuesday_files/tippy-6.2.7/tippy.umd.min.js","2021-01-19-tidy-tuesday_files/webcomponents-2.0.0/webcomponents.js","counties.geojson","crops.csv","gender.csv","households.csv","kenya_county_size.gif"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
 <meta name="distill:offset" content="../.."/>
@@ -2042,6 +2040,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!--/radix_placeholder_distill-->
   <script src="../../site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="../../site_libs/popper-2.6.0/popper.min.js"></script>
+  <link href="../../site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
+  <link href="../../site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
+  <script src="../../site_libs/tippy-6.2.7/tippy.umd.min.js"></script>
   <script src="../../site_libs/anchor-4.2.2/anchor.min.js"></script>
   <script src="../../site_libs/bowser-1.9.3/bowser.min.js"></script>
   <script src="../../site_libs/webcomponents-2.0.0/webcomponents.js"></script>
@@ -2057,7 +2059,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Welcome to Arthur Gailes","description":"Welcome to our new blog, Arthur Gailes. We hope you enjoy \nreading what we have to say!","authors":[{"author":"Nora Jones","authorURL":"https://example.com/norajones","affiliation":"Spacely Sprockets","affiliationURL":"https://example.com/spacelysprokets","orcidID":""}],"publishedDate":"2021-01-09T00:00:00.000-08:00","citationText":"Jones, 2021"}
+{"title":"Resizing Polygons by Population Using sf","description":"January 19, 2021 \nTidy Tuesday submission.","authors":[{"author":"Arthur Gailes","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2021-01-25T00:00:00.000-08:00","citationText":"Gailes, 2021"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2081,20 +2083,200 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Welcome to Arthur Gailes</h1>
+<h1>Resizing Polygons by Population Using sf</h1>
 <!--radix_placeholder_categories-->
+<div class="dt-tags">
+  <a href="../../index.html#category:tidytuesday" class="dt-tag">tidytuesday</a>
+  <a href="../../index.html#category:visualizations" class="dt-tag">visualizations</a>
+  <a href="../../index.html#category:sf" class="dt-tag">sf</a>
+  <a href="../../index.html#category:ggplot2" class="dt-tag">ggplot2</a>
+  <a href="../../index.html#category:maps" class="dt-tag">maps</a>
+</div>
 <!--/radix_placeholder_categories-->
-<p><p>Welcome to our new blog, Arthur Gailes. We hope you enjoy reading what we have to say!</p></p>
+<p>January 19, 2021 Tidy Tuesday submission.</p>
 </div>
 
 <div class="d-byline">
-  Nora Jones <a href="https://example.com/norajones" class="uri">https://example.com/norajones</a> (Spacely Sprockets)<a href="https://example.com/spacelysprokets" class="uri">https://example.com/spacelysprokets</a>
+  Arthur Gailes  
   
-<br/>01-09-2021
+<br/>01-25-2021
 </div>
 
 <div class="d-article">
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<figure>
+<img src="kenya_county_size.gif" alt="Resizing Kenya’s county polygons" /><figcaption>Resizing Kenya’s county polygons</figcaption>
+</figure>
+<p>A quick demonstration of affline transformations with the Kenya Census</p>
+<h2 id="data-source">Data Source</h2>
+<p>Thanks as always to the TidyTuesday crew at R4DS.</p>
+<p>The data this week comes from rKenyaCensus courtesy of Shelmith Kariuki. Shelmith wrote about these datasets on her blog.</p>
+<blockquote>
+<p>rKenyaCensus is an R package that contains the 2019 Kenya Population and Housing Census results. The results were released by the Kenya National Bureau of Statistics in February 2020, and published in four different pdf files (Volume 1 - Volume 4).</p>
+</blockquote>
+<blockquote>
+<p>The 2019 Kenya Population and Housing Census was the eighth to be conducted in Kenya since 1948 and was conducted from the night of 24th/25th to 31st August 2019. Kenya leveraged on technology to capture data during cartographic mapping, enumeration and data transmission, making the 2019 Census the first paperless census to be conducted in Kenya</p>
+</blockquote>
+<p>Additional details about Kenya can be found on Wikipedia.</p>
+<blockquote>
+<p>Kenya, officially the Republic of Kenya (Swahili: Jamhuri ya Kenya), is a country in Eastern Africa. At 580,367 square kilometres (224,081 sq mi), Kenya is the world’s 48th largest country by total area. With a population of more than 47.6 million people in the 2019 census, Kenya is the 29th most populous country. Kenya’s capital and largest city is Nairobi, while its oldest city and first capital is the coastal city of Mombasa.</p>
+</blockquote>
+<h1 id="load-the-weekly-data">Load the weekly Data</h1>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>knitr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/knitr/man/opts_chunk.html'>opts_chunk</a></span><span class='op'>$</span><span class='fu'>set</span><span class='op'>(</span>echo <span class='op'>=</span> <span class='cn'>TRUE</span>, message<span class='op'>=</span><span class='cn'>F</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'tidyverse'</span>,<span class='st'>'tidytuesdayR'</span>,<span class='st'>'here'</span>,<span class='st'>'ggplot2'</span>,<span class='st'>'ggthemes'</span>,<span class='st'>'rKenyaCensus'</span>,<span class='st'>'sf'</span>,
+  <span class='st'>'gganimate'</span><span class='op'>)</span>, <span class='va'>require</span>, character.only<span class='op'>=</span><span class='cn'>T</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>   tidyverse tidytuesdayR         here      ggplot2     ggthemes 
+        TRUE         TRUE         TRUE         TRUE         TRUE 
+rKenyaCensus           sf    gganimate 
+        TRUE         TRUE         TRUE </code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>knitr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/knitr/man/opts_knit.html'>opts_knit</a></span><span class='op'>$</span><span class='fu'>set</span><span class='op'>(</span>root.dir <span class='op'>=</span> <span class='fu'>here</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Dowload the weekly data and make available in the <code>tt</code> object. Use the rKenyaCensus to do so, adding the polygons for each county.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># grab 3 tables of interest</span>
+<span class='va'>crops</span> <span class='op'>&lt;-</span> <span class='fu'>rKenyaCensus</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/rKenyaCensus/man/V4_T2.21.html'>V4_T2.21</a></span>
+<span class='va'>gender</span> <span class='op'>&lt;-</span> <span class='fu'>rKenyaCensus</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/rKenyaCensus/man/V1_T2.2.html'>V1_T2.2</a></span>
+<span class='va'>households</span> <span class='op'>&lt;-</span> <span class='fu'>rKenyaCensus</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/rKenyaCensus/man/V1_T2.3.html'>V1_T2.3</a></span>
+<span class='va'>counties</span> <span class='op'>&lt;-</span> <span class='fu'>rKenyaCensus</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/rKenyaCensus/man/KenyaCounties_SHP.html'>KenyaCounties_SHP</a></span> <span class='op'>%&gt;%</span> 
+  <span class='va'>st_as_sf</span> <span class='op'>%&gt;%</span> <span class='fu'>st_transform</span><span class='op'>(</span><span class='fl'>4326</span><span class='op'>)</span>
+
+<span class='co'># write them out</span>
+<span class='va'>households</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>write_csv</span><span class='op'>(</span><span class='st'>"_tidytuesday/2021-01-19-tidy-tuesday/households.csv"</span><span class='op'>)</span>
+
+<span class='va'>gender</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>write_csv</span><span class='op'>(</span><span class='st'>"_tidytuesday/2021-01-19-tidy-tuesday/gender.csv"</span><span class='op'>)</span>
+
+<span class='va'>crops</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>write_csv</span><span class='op'>(</span><span class='st'>"_tidytuesday/2021-01-19-tidy-tuesday/crops.csv"</span><span class='op'>)</span>
+
+<span class='fu'>st_write</span><span class='op'>(</span><span class='va'>counties</span>, <span class='st'>"_tidytuesday/2021-01-19-tidy-tuesday/counties.geojson"</span>, delete_dsn <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>After saving, load from the directory directly:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>households</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"_tidytuesday/2021-01-19-tidy-tuesday/households.csv"</span><span class='op'>)</span>
+<span class='va'>gender</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"_tidytuesday/2021-01-19-tidy-tuesday/gender.csv"</span><span class='op'>)</span>
+<span class='va'>crops</span> <span class='op'>&lt;-</span> <span class='fu'>read_csv</span><span class='op'>(</span><span class='st'>"_tidytuesday/2021-01-19-tidy-tuesday/crops.csv"</span><span class='op'>)</span>
+<span class='va'>counties</span> <span class='op'>&lt;-</span> <span class='fu'>st_read</span><span class='op'>(</span><span class='st'>"_tidytuesday/2021-01-19-tidy-tuesday/counties.geojson"</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Reading layer `counties&#39; from data source `/media/kyouma_des/Extra Files/GoogleDrive/AG Resume and Work Stuff/website/_tidytuesday/2021-01-19-tidy-tuesday/counties.geojson&#39; using driver `GeoJSON&#39;
+Simple feature collection with 47 features and 7 fields
+geometry type:  MULTIPOLYGON
+dimension:      XY
+bbox:           xmin: 33.9105 ymin: -4.679729 xmax: 41.91056 ymax: 5.466978
+geographic CRS: WGS 84</code></pre>
+</div>
+<h1 id="glimpse-data">Glimpse Data</h1>
+<p>Take an initial look at the format of the data available.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>counties</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>Simple feature collection with 6 features and 7 fields
+geometry type:  MULTIPOLYGON
+dimension:      XY
+bbox:           xmin: 33.9105 ymin: -1.038021 xmax: 37.93755 ymax: 1.653522
+geographic CRS: WGS 84
+           County Population    Area     PD  PDR  Factor     CRI
+1         BARINGO     666763 11075.3  60.20 0.71 0.00951 0.02902
+2           BOMET     875689  1997.9 438.30 5.20 0.06927 0.21127
+3         BUNGOMA    1670570  2206.9 756.98 8.98 0.11963 0.36487
+4           BUSIA     893681  1628.4 548.81 6.51 0.08673 0.26453
+5 ELGEYO/MARAKWET     454480  3049.7 149.02 1.77 0.02355 0.07183
+6            EMBU     608599  2555.9 238.12 2.82 0.03763 0.11478
+                        geometry
+1 MULTIPOLYGON (((35.78413 1....
+2 MULTIPOLYGON (((35.45192 -0...
+3 MULTIPOLYGON (((34.62083 1....
+4 MULTIPOLYGON (((33.91369 0....
+5 MULTIPOLYGON (((35.5598 1.2...
+6 MULTIPOLYGON (((37.55331 -0...</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>gender</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code># A tibble: 6 x 5
+  County         Male   Female Intersex    Total
+  &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+1 Total      23548056 24014716     1524 47564296
+2 Mombasa      610257   598046       30  1208333
+3 Kwale        425121   441681       18   866820
+4 Kilifi       704089   749673       25  1453787
+5 Tana River   158550   157391        2   315943
+6 Lamu          76103    67813        4   143920</code></pre>
+</div>
+<h1 id="wrangle">Wrangle</h1>
+<p>Transform country size based on population, then append to the existing dataset. The polygon transformation is conducted in <code>county_size</code>.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>centroids</span> <span class='op'>&lt;-</span> <span class='va'>counties</span> <span class='op'>%&gt;%</span> <span class='va'>st_geometry</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>st_transform</span><span class='op'>(</span><span class='fl'>3857</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='va'>st_centroid</span> <span class='op'>%&gt;%</span> <span class='fu'>st_transform</span><span class='op'>(</span><span class='fl'>4326</span><span class='op'>)</span>
+
+<span class='va'>county_form</span> <span class='op'>&lt;-</span> <span class='fu'>transmute</span><span class='op'>(</span><span class='va'>counties</span>, county<span class='op'>=</span><span class='fu'>tools</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/r/tools/toTitleCase.html'>toTitleCase</a></span><span class='op'>(</span><span class='va'>County</span><span class='op'>)</span>, population<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='va'>Population</span><span class='op'>)</span>, 
+  pop_scale<span class='op'>=</span><span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/rescale.html'>rescale</a></span><span class='op'>(</span><span class='va'>population</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.01</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>, centroid <span class='op'>=</span> <span class='va'>centroids</span>, type<span class='op'>=</span><span class='st'>'Colored'</span>
+  <span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>st_set_crs</span><span class='op'>(</span><span class='fl'>4326</span><span class='op'>)</span>
+
+<span class='co'># shift sizes around centroids</span>
+<span class='va'>county_size</span> <span class='op'>&lt;-</span> <span class='fu'>mutate</span><span class='op'>(</span><span class='va'>county_form</span>, geometry <span class='op'>=</span> <span class='op'>(</span><span class='va'>geometry</span><span class='op'>-</span><span class='va'>centroid</span><span class='op'>)</span><span class='op'>*</span><span class='va'>pop_scale</span><span class='op'>+</span><span class='va'>centroid</span>,
+  type<span class='op'>=</span><span class='st'>'Sized'</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>st_set_crs</span><span class='op'>(</span><span class='fl'>4326</span><span class='op'>)</span> 
+
+<span class='co'># replicate the original shape with NA for population so the color fill can animate</span>
+<span class='va'>county_blank</span> <span class='op'>&lt;-</span> <span class='fu'>mutate</span><span class='op'>(</span><span class='va'>county_form</span>, population <span class='op'>=</span> <span class='cn'>NA</span>, type<span class='op'>=</span><span class='st'>'Default'</span><span class='op'>)</span>
+
+<span class='co'># bind together for gganimate so I can switch between fill states</span>
+<span class='va'>county_anim</span> <span class='op'>&lt;-</span> <span class='fu'>bind_rows</span><span class='op'>(</span><span class='va'>county_blank</span>, <span class='va'>county_form</span>, <span class='va'>county_size</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>type</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Default"</span>,<span class='st'>'Colored'</span>,<span class='st'>'Sized'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h1 id="visualization">Visualization</h1>
+<p>How is Kenya’s population distributed across counties? Resize the polygons from 1% to 100% of original size based on the population size. Gif included at the top; this is the code that generated it.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>anim</span> <span class='op'>&lt;-</span> <span class='fu'>ggplot</span><span class='op'>(</span><span class='va'>county_anim</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>geom_sf</span><span class='op'>(</span><span class='fu'>aes</span><span class='op'>(</span>fill<span class='op'>=</span><span class='va'>population</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='co'># animation specs</span>
+  <span class='fu'>transition_states</span><span class='op'>(</span>
+    <span class='va'>type</span>, transition_length<span class='op'>=</span><span class='fl'>1</span>, state_length <span class='op'>=</span> <span class='fl'>2</span>
+  <span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>ease_aes</span><span class='op'>(</span><span class='st'>'cubic-in-out'</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='fu'>enter_fade</span><span class='op'>(</span><span class='op'>)</span><span class='op'>+</span>
+  <span class='co'># back to ggplot; add counties with no fill so outlines stay consistent</span>
+  <span class='fu'>geom_sf</span><span class='op'>(</span>data<span class='op'>=</span><span class='va'>counties</span>, fill<span class='op'>=</span><span class='cn'>NA</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>scale_fill_steps</span><span class='op'>(</span>n.breaks<span class='op'>=</span><span class='fl'>4</span>, low<span class='op'>=</span><span class='st'>"#bdc9e1"</span>, high<span class='op'>=</span><span class='st'>"#045a8d"</span>, labels<span class='op'>=</span><span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org//reference/label_number.html'>comma</a></span>,
+    guide<span class='op'>=</span><span class='st'>'legend'</span>, trans<span class='op'>=</span><span class='st'>'log10'</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>labs</span><span class='op'>(</span>title<span class='op'>=</span><span class='st'>"Kenya's Counties"</span>, fill<span class='op'>=</span><span class='st'>'Population'</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme_map</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>theme</span><span class='op'>(</span>
+    title<span class='op'>=</span><span class='fu'>element_text</span><span class='op'>(</span>size<span class='op'>=</span><span class='fl'>16</span>, color<span class='op'>=</span><span class='st'>'black'</span><span class='op'>)</span>
+  <span class='op'>)</span>
+  
+<span class='fu'>animate</span><span class='op'>(</span><span class='va'>anim</span>, nframes <span class='op'>=</span> <span class='fl'>20</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h1 id="save">Save</h1>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'>anim_save</span><span class='op'>(</span><span class='st'>'_tidytuesday/2021-01-19-tidy-tuesday/kenya_county_size.gif'</span>, <span class='va'>anim</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h1 id="review">Review</h1>
+<p>An obvious limitation to this approach is that a polygon can only go up to 100% of its original size without exceeding its original boundaries. In this map, the smallest county has the largest population, so the visual impact of the shifts is really messy. A possible cleanup strategy would be to make the original polygons to make them smaller, and so that the population-scaled polygons could increase to fit to the original boundaries.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

@@ -8,8 +8,8 @@ function base_map(svg, data){
   const path = d3.geoPath().projection(d3.geoMercator());
   const bounds = path.bounds;
   const center = path.centroid;
-  const imgHeight = d => 0.5*(bounds(d.geometry)[1][1] - bounds(d.geometry)[0][1]);
-  const imgWidth = d => 0.5*(bounds(d.geometry)[1][0] - bounds(d.geometry)[0][0]);
+  const imgHeight = d => (bounds(d.geometry)[1][1] - bounds(d.geometry)[0][1]);
+  const imgWidth = d => (bounds(d.geometry)[1][0] - bounds(d.geometry)[0][0]);
   
   
 
@@ -47,11 +47,4 @@ gpath
   
 }
 
-
 base_map(svg, data);
-
-// get width and height for logos
-function imgHeight(d){
-  const b = bounds(d.geometry);
-  return b[1][1] - b[0][1];
-}

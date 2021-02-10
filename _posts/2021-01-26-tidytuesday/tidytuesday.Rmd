@@ -12,6 +12,7 @@ output:
 draft: true
 ---
 
+ABANDONDED: I don't know how to make this presentable without a ton of work.
 
 A quick demonstration of affline transformations with the Kenya Census
 
@@ -75,7 +76,7 @@ head(plastic)
 
 # Wrangle
 
-Transform to long by recycling code:
+Filter the dataset to only include the top company from each dataset.
 ```{r}
 plast_reduce <- plastic %>% 
   filter(year==2020, !parent_company %in% c('Unbranded','null','NULL')) %>% 
@@ -83,8 +84,16 @@ plast_reduce <- plastic %>%
   # get the total for each company by country
   group_by(country, parent_company) %>% 
   summarize(grand_total = sum(grand_total, na.rm=T), .groups='drop_last') %>% 
-  # keep only the top company in eac h country
-  filter(grand_total == max(grand_total)) %>% ungroup() %>% 
+  # keep only the top company in each country
+  filter(grand_total == max(grand_total)) %>%
+  # remove ties
+  distinct(country, .keep_all=T) %>% 
+  # alter US to match geographic dataset.
+  mutate(country = case_when(
+    country== 'United States of America' ~ 'United States',
+    TRUE ~country,
+  ))
+  ungroup() %>% 
   arrange(desc(grand_total))
 
 head(plast_reduce)
@@ -109,10 +118,6 @@ Load global countries geojson (downloaded from https://geojson-maps.ash.ms/).
 ```{r}
 geo <- st_read('world_countries.geo.json') 
 
-# create centroids
-geo_cen <- st_centroid(st_transform(geo, 3857))
-
-
 ```
 
 
@@ -131,18 +136,13 @@ step1
 Not the prettiest map, but we're going somewhere. Now, I want to see if I can replace a polygon with an image.
 
 ```{r}
-# load table of company images
-logos <- read_csv('company_logos.csv')
-
 # join with country geographies and remove extra information
-geo_logo <- geo %>% 
+geo_plast <- geo %>% 
   select(name, name2=admin, name_long, pop_est, gdp_md_est) %>% 
   mutate(name_id = tolower(name), name_id = gsub(' ','_',name_id)) %>% 
-  left_join(plast_reduce, by = c('name'='country')) %>% 
-  # 60 of 63 countries join. Leaving that alone for now
-  left_join(logos, by=c('parent_company'='company'))
+  left_join(plast_reduce, by = c('name'='country')) 
 
-head(geo_logo)
+summary(geo_plast)
 ```
 
 
@@ -152,31 +152,59 @@ Next, test to see if I can replace a polygon with an image.
 
 (I tried to link this image locally, but failed. After playing with `htmlDependency` for far too long, I gave up and just added logos to the github repository.)
 ```{r}
-# geo_test <- filter(geo_logo, parent_company == 'Universal Robina Corporation') %>% 
+# geo_test <- filter(geo_plast, parent_company == 'Universal Robina Corporation') %>% 
 #   # create id for image
 #   mutate(imageId = paste0('d3-', gsub(' ','', parent_company)))
 
-r2d3(data=geo, script='plasticMap_step2.js', viewer='external')
+step2 <- r2d3(data=geo_plast, script='plasticMap_step2.js', viewer='external')
+step2
 ```
 
 Harumph. The code works, but r2d3 doesn't want to play nicely with my local images. After playing with `htmlDependency` for far too long, I gave up and just added logos to the github repository.
 
-Okay! Not great, but we've got a logo on top of a map.
+Okay! Not great, but we've got a logo on top of a map!
 
 #### Step 3: Get the logo to show by country.
 ```{r}
-# geo_test <- filter(geo_logo, parent_company == 'Universal Robina Corporation') %>% 
-#   # create id for image
-#   mutate(imageId = paste0('d3-', gsub(' ','', parent_company)))
-
-r2d3(data=geo_logo, script='plasticMap_step3.js', viewer='browser')
+step3 <- r2d3(data=geo_plast, script='plasticMap_step3.js', viewer='external')
+step3
 ```
 
-
+Ugly, but it works. 
 
 #### Step 4: Show all logos
 
+I manually downloaded the logos for the top company in each country. Because I couldn't get r2d3 to read my local path, I uploaded them to the github repository. To link them, I use a spreadsheet of their filenames.
+```{r load_logos}
+# load table of company images
+logo <- read_csv('company_logos.csv') 
+```
+```{r url_paste, echo=FALSE}
+# paste URL prefix
+logo <- mutate(logo, logo = paste0(
+    'https://raw.githubusercontent.com/arthurgailes/arthurgailes.github.io/main/_posts/2021-01-26-tidytuesday/company_logos/', logo
+  ))
+```
+
+Now, insert them into the plastics dataset and add to the map:
+```{r}
+geo_logo <- geo_plast%>% 
+  # 60 of 63 countries join. Leaving that alone for now
+  left_join(logo, by=c('parent_company'='company'))
+step4 <- r2d3(data=geo_logo, script='plasticMap_step4.js', viewer='external')
+step4
+```
+
+
 #### Step 5: Finishing Touches
+
+The logos show, but they're oddly placed - mostly because many countries have non-continguous areas that through off their center (think Alaska in the US). Fixing that would be a lot more work, so I'm just going to leave it here
+
+```{r}
+step5 <- r2d3(data=geo_logo, script='plasticMap.js', viewer='browser')
+step5
+```
+
 
 # Save
 ```{r eval=FALSE}
@@ -187,12 +215,10 @@ anim_save('_tidytuesday/2021-01-19-tidy-tuesday/kenya_county_size.gif', anim)
 
 An obvious limitation to this approach is that a polygon can only go up to 100% of its original size without exceeding its original boundaries. In this map, the smallest county has the largest population, so the visual impact of the shifts is really messy. A possible cleanup strategy would be to make the original polygons to make them smaller, and so that the population-scaled polygons could increase to fit to the original boundaries.
 
-```{r}
-r2d3(data=matrix(round(runif(16, 1, 10000)), ncol = 4, nrow = 4), script="https://raw.githubusercontent.com/rstudio/r2d3/master/vignettes/gallery/chord/chord.js")
-```
-
 
 # Notes
 cartogram resize: https://observablehq.com/@d3/non-contiguous-cartogram
 fill svg: https://stackoverflow.com/questions/3796025/fill-svg-path-element-with-a-background-image
+
+svg pattern fills: http://iros.github.io/patternfills/sample_svg.html
   https://stackoverflow.com/questions/25881186/d3-fill-shape-with-image-using-pattern
