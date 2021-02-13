@@ -15,14 +15,19 @@ This site will eventually host examples of my professional work.
 **Interactive Maps**
 
 * California Tax Credit Allocation Committee:
+  + Used to allocate over $1 billion in annual California tax credits to affordable housing.
   + [2021 Opportunity Map](https://belonging.berkeley.edu/2021-tcac-opportunity-map)
   + [2020 Opportunity Map](https://belonging.berkeley.edu/tcac-opportunity-map-2020)
   + [2019 Opportunity Map](https://haasinstitute.berkeley.edu/sites/default/files/mappings/TCAC/opportunity_map_2019.html)
 * [Bay Area Segreation Map](https://belonging.berkeley.edu/bay-segregation-map)
+* [California Opportunity map](https://mappingopportunityca.org/)
+  + Cited in legislation: [2019 California Senate Bill 50](https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=201920200SB50) ("CHAPTER  4.35. Equitable Communities Incentives")
 
 **Co-Author:**
 
 * [Bay Area Zoning Report: Characteristics of Exclusionary Communities](https://belonging.berkeley.edu/single-family-zoning-san-francisco-bay-area)
+  + Media Coverage:
+    - [Berkeley considers ending single-family zoning](https://www.mercurynews.com/2021/02/12/berkeley-considers-ending-single-family-zoning/amp/)
 * Racial Segregation in the San Francisco Bay Area
   + [Part 3: Measuring Segregation](https://haasinstitute.berkeley.edu/racial-segregation-san-francisco-bay-area-part-3)
   + [Part 4: The Harmful Effects of Segregation](https://haasinstitute.berkeley.edu/racial-segregation-san-francisco-bay-area-part-4)

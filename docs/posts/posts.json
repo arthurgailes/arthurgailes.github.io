@@ -21,22 +21,5 @@
     "preview": "posts/2021-01-19-tidy-tuesday/kenya_county_size.gif",
     "last_modified": "2021-01-25T17:33:21-08:00",
     "input_file": {}
-  },
-  {
-    "path": "posts/welcome/",
-    "title": "Welcome to Arthur Gailes",
-    "description": "Welcome to our new blog, Arthur Gailes. We hope you enjoy \nreading what we have to say!",
-    "author": [
-      {
-        "name": "Nora Jones",
-        "url": "https://example.com/norajones"
-      }
-    ],
-    "date": "2021-01-09",
-    "categories": [],
-    "contents": "\n\n\n\n",
-    "preview": {},
-    "last_modified": "2021-01-09T22:55:35-08:00",
-    "input_file": {}
   }
 ]

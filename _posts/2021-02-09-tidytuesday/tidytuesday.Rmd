@@ -11,41 +11,59 @@ output:
     self_contained: false
 ---
 
-
+Q: Should I use r2d3 or gganimate?
 # TidyTuesday
 
 
-
-```{r setup, include=FALSE}
+```{r setup}
 
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 library(tidytuesdayR)
-
+library(r2d3)
 ```
 
 # Load the weekly Data
 
 Dowload the weekly data and make available in the `tt` object.
 
-```{r Load}
-
+```{r Load, eval = interactive()}
+# load tidytuesday data
 tt <- tt_load("2021-02-09")
-
-```
-
-
-# Readme
-
-Take a look at the readme for the weekly data to get insight on the dataset.
-This includes a data dictionary, source, and a link to an article on the data.
-
-```{r Readme, eval = interactive()}
-
 tt
 
+#format data to match the other dfs
+wealth <- tt$race_wealth %>% 
+  filter(type=='Median') %>% select(-type)
+inc <- tt$income_mean %>% 
+  filter(dollar_type=='2019 Dollars', !grepl('Combination', race)) %>% 
+  select(-dollar_type) %>% 
+  mutate(race = gsub(' Alone','',race)) %>% 
+  # resolve data error
+  distinct(year, race, income_quintile, .keep_all = T) %>% 
+  pivot_wider(names_from=income_quintile, values_from=income_dollars, 
+    names_prefix = 'Income Quntile: ')
+
+# disaggregate the list into a single dataframe
+byvars <- c('year','race')
+tt_df_wide <- left_join(tt$home_owner, tt$student_debt, by=byvars) %>% 
+  left_join(inc, by=byvars) %>% 
+  left_join(wealth, by=byvars) 
+
+tt_df <- pivot_longer(tt_df_wide, -c(year, race)) %>% 
+  # remove NA values that didn't join
+  filter(!is.na(value))
+
+# filter dataframe to only black people
+tt_df_black <- filter(tt_df, race=='Black')
+
+#write to local directory
+write_csv(tt_df_black, 'black_stats.csv')
+tt_df
+
 ```
+
 
 
 # Glimpse Data
@@ -53,29 +71,69 @@ tt
 Take an initial look at the format of the data available.
 
 ```{r Glimpse}
-
-tt %>% 
-  map(glimpse)
-
+black_stats <- read_csv('black_stats.csv', col_types = cols())
+glimpse(black_stats)
 ```
 
-# Wrangle
-
-Explore the data and process it into a nice format for plotting! Access each dataset by name by using a dollarsign after the `tt` object and then the name of the data set.
-
-```{r Wrangle}
-
-
-
+A quick facet visualization of each indicator over time
+```{r}
+ggplot(black_stats, aes(x=year, y=value)) +
+  facet_wrap(vars(name), scales='free', nrow=4) +
+  geom_line()
 ```
 
-
+Looking at these plots, the question that jumps out at me is: what happened in 2000?
 # Visualize
 
 Using your processed dataset, create your unique visualization.
 
-```{r Visualize}
+```{d3 data=black_stats}
+const dims = {
+  margl:20,
+  margr:10,
+  margt:10,
+  margb:20,
+};
+dims.intHeight = height-dims.margt-dims.margb;
+dims.intWidth = width-dims.margl-dims.margr;
 
+// x/y values
+const x= d3.scaleLinear()
+  .domain(d3.extent(data, d=> d.year))
+  .range([dims.margl, width-dims.margr]);
+const y=d3.scaleLinear()
+  .domain(d3.extent(data, d=> d.value))
+  .range([height-dims.margt, dims.margb]);
+
+// axis functions
+const xAxis = g=> g
+  .attr("transform", `translate(0,${height - dims.margb})`)
+  .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
+  ;
+const yAxis = g => g
+    .attr("transform", `translate(${dims.margl},0)`)
+    .call(d3.axisLeft(y))
+    ;
+const line = d3.line()
+  .x(d=> x(d.year))
+  .y(d=> y(d.value))
+  ;
+    
+  // add lines
+svg.append('g')
+  .selectAll('path')
+  .data(data)
+  .join('path')
+  .attr("fill", "none")
+  .attr("stroke", "steelblue")
+  .attr("stroke-width", 1.5)
+  .attr("stroke-linejoin", "round")
+  .attr("stroke-linecap", "round")
+  .attr("d", line);
+  
+// add axes
+svg.append('g').call(xAxis);
+svg.append('g').call(yAxis);
 
   
 ```
@@ -84,7 +142,7 @@ Using your processed dataset, create your unique visualization.
 
 Save your image for sharing. Be sure to use the `#TidyTuesday` hashtag in your post on twitter! 
 
-```{r}
+```{r eval=FALSE}
 
 # This will save your most recent plot
 ggsave(
