@@ -1,38 +1,47 @@
 ---
-title: "tidytuesday"
+title: "Tidy Tuesday: Feb 09,2021"
 description: |
-  A short description of the post.
+  Black wealth and income over time
 author:
   - name: Arthur Gailes
     url: {}
-date: 02-09-2021
+date: 02-16-2021
 output:
   distill::distill_article:
     self_contained: false
+categories:
+    - tidytuesday
+    - ggplot2
+preview: black_wealth_tt.png
 ---
 
-Q: Should I use r2d3 or gganimate?
-# TidyTuesday
+![Black Wealth Time Series](black_wealth_tt.png)
 
+The data this week comes from the Urban Institute and the US Census. The Urban Institute lays out nine charts about racial wealth inequality in America. 
 
-```{r setup}
+### Motivating question
+How has black wealth and income progressed over time?
 
+### Setup 
+```{r setup, results='hide'}
 knitr::opts_chunk$set(echo = TRUE)
 
-library(tidyverse)
-library(tidytuesdayR)
-library(r2d3)
+sapply(c('tidyverse','tidytuesdayR','ggthemes','forcats'), require, character.only=T)
 ```
 
 # Load the weekly Data
 
-Dowload the weekly data and make available in the `tt` object.
+Download the weekly data and make available in the `tt` object.
 
 ```{r Load, eval = interactive()}
 # load tidytuesday data
 tt <- tt_load("2021-02-09")
 tt
+```
 
+To answer the motivating question, create a subset of data for black people and save to the local directory:
+
+```{r subset, eval=FALSE}
 #format data to match the other dfs
 wealth <- tt$race_wealth %>% 
   filter(type=='Median') %>% select(-type)
@@ -60,93 +69,68 @@ tt_df_black <- filter(tt_df, race=='Black')
 
 #write to local directory
 write_csv(tt_df_black, 'black_stats.csv')
-tt_df
-
 ```
 
+## Glimpse Data
 
-
-# Glimpse Data
-
-Take an initial look at the format of the data available.
+Take an initial look at data
 
 ```{r Glimpse}
 black_stats <- read_csv('black_stats.csv', col_types = cols())
 glimpse(black_stats)
 ```
 
-A quick facet visualization of each indicator over time
+## Prepare Data for Charts
+
+I create a function to differentiate dollar/percent scales, and then convert the categories of income and wealth to a factor to preserve order.
+
 ```{r}
-ggplot(black_stats, aes(x=year, y=value)) +
-  facet_wrap(vars(name), scales='free', nrow=4) +
-  geom_line()
+# axis label function
+stat_scales <- function(x){
+  if(mean(x, na.rm=T) < 1) d <- scales::percent(x, accuracy=1)
+  else d <- scales::dollar(x)
+  return(d)
+}
+
+black_stats_chart <- black_stats %>% 
+  mutate(color = ifelse(year<2000, 'green','gray'),
+    namefac = factor(name, levels = c("Income Quntile: Lowest","Income Quntile: Second" ,
+    "Income Quntile: Middle", "Income Quntile: Fourth","Income Quntile: Highest",
+    "Income Quntile: Top 5%", "wealth_family","home_owner_pct","loan_debt","loan_debt_pct")),
+    # rename values as needed
+    namefac = fct_recode(namefac, "Family Wealth"="wealth_family",
+      "% Homeowners"="home_owner_pct",
+      "Student Loan Debt"="loan_debt","Families w/ Student Loans"="loan_debt_pct")
+  ) 
 ```
 
-Looking at these plots, the question that jumps out at me is: what happened in 2000?
-# Visualize
+### Visualize
 
-Using your processed dataset, create your unique visualization.
+Display each of the indicators in its own facet. On a cursory glance, it becomes apparent that the year 2000 was an inflection point in most of the data.
 
-```{d3 data=black_stats}
-const dims = {
-  margl:20,
-  margr:10,
-  margt:10,
-  margb:20,
-};
-dims.intHeight = height-dims.margt-dims.margb;
-dims.intWidth = width-dims.margl-dims.margr;
-
-// x/y values
-const x= d3.scaleLinear()
-  .domain(d3.extent(data, d=> d.year))
-  .range([dims.margl, width-dims.margr]);
-const y=d3.scaleLinear()
-  .domain(d3.extent(data, d=> d.value))
-  .range([height-dims.margt, dims.margb]);
-
-// axis functions
-const xAxis = g=> g
-  .attr("transform", `translate(0,${height - dims.margb})`)
-  .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0))
-  ;
-const yAxis = g => g
-    .attr("transform", `translate(${dims.margl},0)`)
-    .call(d3.axisLeft(y))
-    ;
-const line = d3.line()
-  .x(d=> x(d.year))
-  .y(d=> y(d.value))
-  ;
-    
-  // add lines
-svg.append('g')
-  .selectAll('path')
-  .data(data)
-  .join('path')
-  .attr("fill", "none")
-  .attr("stroke", "steelblue")
-  .attr("stroke-width", 1.5)
-  .attr("stroke-linejoin", "round")
-  .attr("stroke-linecap", "round")
-  .attr("d", line);
-  
-// add axes
-svg.append('g').call(xAxis);
-svg.append('g').call(yAxis);
-
-  
+```{r}
+p <- ggplot(black_stats_chart, aes(x=year, y=value, col=year<2000)) +
+  geom_line(size=1.2) +
+  geom_vline(xintercept=2000, col='red', size=1.2)+
+  scale_color_manual(values=c('gray','green'), guide=F)+
+  scale_y_continuous(labels = stat_scales, breaks=scales::pretty_breaks(n=3)) +
+  facet_wrap(vars(namefac), scales='free', nrow=4) +
+  theme_hc() +
+  theme(
+    title=element_text(size=16),
+  ) +
+  labs(title = "2000: The Year Black Progress Stalled", x='Year',y='')
+p
 ```
 
-# Save Image
+### Save Image
 
-Save your image for sharing. Be sure to use the `#TidyTuesday` hashtag in your post on twitter! 
-
-```{r eval=FALSE}
+```{r eval=interactive()}
 
 # This will save your most recent plot
-ggsave(
-  filename = "My TidyTuesday Plot.png",
+ggsave(p,
+  filename = "black_wealth_tt.png",
+  width=8, height=7,
   device = "png")
 
 ```
