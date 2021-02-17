@@ -44,7 +44,6 @@ Additional details about Kenya can be found on Wikipedia.
 knitr::opts_chunk$set(echo = TRUE, message=F)
 sapply(c('tidyverse','tidytuesdayR','here','ggplot2','ggthemes','rKenyaCensus','sf',
   'gganimate'), require, character.only=T)
-knitr::opts_knit$set(root.dir = here())
 ```
 
 
@@ -60,15 +59,15 @@ counties <- rKenyaCensus::KenyaCounties_SHP %>%
 
 # write them out
 households %>% 
-  write_csv("_tidytuesday/2021-01-19-tidy-tuesday/households.csv")
+  write_csv("households.csv")
 
 gender %>% 
-  write_csv("_tidytuesday/2021-01-19-tidy-tuesday/gender.csv")
+  write_csv("gender.csv")
 
 crops %>% 
-  write_csv("_tidytuesday/2021-01-19-tidy-tuesday/crops.csv")
+  write_csv("crops.csv")
 
-st_write(counties, "_tidytuesday/2021-01-19-tidy-tuesday/counties.geojson", delete_dsn = T)
+st_write(counties, "counties.geojson", delete_dsn = T)
 ```
 
 ```{r Readme, eval = interactive(), include=FALSE}
@@ -83,10 +82,10 @@ tt %>%
 After saving, load from the directory directly:
 
 ```{r Load}
-households <- read_csv("_tidytuesday/2021-01-19-tidy-tuesday/households.csv")
-gender <- read_csv("_tidytuesday/2021-01-19-tidy-tuesday/gender.csv")
-crops <- read_csv("_tidytuesday/2021-01-19-tidy-tuesday/crops.csv")
-counties <- st_read("_tidytuesday/2021-01-19-tidy-tuesday/counties.geojson")
+households <- read_csv("households.csv")
+gender <- read_csv("gender.csv")
+crops <- read_csv("crops.csv")
+counties <- st_read("counties.geojson")
 
 ```
 
@@ -157,7 +156,7 @@ animate(anim, nframes = 20)
 
 # Save
 ```{r eval=FALSE}
-anim_save('_tidytuesday/2021-01-19-tidy-tuesday/kenya_county_size.gif', anim)
+anim_save('kenya_county_size.gif', anim)
 ```
 
 # Review
