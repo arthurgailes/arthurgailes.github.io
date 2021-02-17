@@ -1,5 +1,25 @@
 [
   {
+    "path": "posts/2021-02-09-tidytuesday/",
+    "title": "Tidy Tuesday: Feb 09,2021",
+    "description": "Black wealth and income over time",
+    "author": [
+      {
+        "name": "Arthur Gailes",
+        "url": {}
+      }
+    ],
+    "date": "2021-02-16",
+    "categories": [
+      "tidytuesday",
+      "ggplot2"
+    ],
+    "contents": "\nBlack Wealth Time SeriesThe data this week comes from the Urban Institute and the US Census. The Urban Institute lays out nine charts about racial wealth inequality in America.\nMotivating question\nHow has black wealth and income progressed over time?\nSetup\n\n\n\nLoad the weekly Data\nDownload the weekly data and make available in the tt object.\n\n\n# load tidytuesday data\ntt <- tt_load(\"2021-02-09\")\ntt\n\n\n\nTo answer the motivating question, create a subset of data for black people and save to the local directory:\n\n\n#format data to match the other dfs\nwealth <- tt$race_wealth %>% \n  filter(type=='Median') %>% select(-type)\ninc <- tt$income_mean %>% \n  filter(dollar_type=='2019 Dollars', !grepl('Combination', race)) %>% \n  select(-dollar_type) %>% \n  mutate(race = gsub(' Alone','',race)) %>% \n  # resolve data error\n  distinct(year, race, income_quintile, .keep_all = T) %>% \n  pivot_wider(names_from=income_quintile, values_from=income_dollars, \n    names_prefix = 'Income Quntile: ')\n\n# disaggregate the list into a single dataframe\nbyvars <- c('year','race')\ntt_df_wide <- left_join(tt$home_owner, tt$student_debt, by=byvars) %>% \n  left_join(inc, by=byvars) %>% \n  left_join(wealth, by=byvars) \n\ntt_df <- pivot_longer(tt_df_wide, -c(year, race)) %>% \n  # remove NA values that didn't join\n  filter(!is.na(value))\n\n# filter dataframe to only black people\ntt_df_black <- filter(tt_df, race=='Black')\n\n#write to local directory\nwrite_csv(tt_df_black, 'black_stats.csv')\n\n\n\nGlimpse Data\nTake an initial look at data\n\n\nblack_stats <- read_csv('black_stats.csv', col_types = cols())\nglimpse(black_stats)\n\n\nRows: 318\nColumns: 4\n$ year  <dbl> 1976, 1976, 1976, 1976, 1976, 1976, 1976, 1977, 1977,…\n$ race  <chr> \"Black\", \"Black\", \"Black\", \"Black\", \"Black\", \"Black\",…\n$ name  <chr> \"home_owner_pct\", \"Income Quntile: Lowest\", \"Income Q…\n$ value <dbl> 4.423822e-01, 8.509000e+03, 1.885000e+04, 3.250800e+0…\n\nPrepare Data for Charts\nI create a function to differentiate dollar/percent scales, and then convert the categories of income and wealth to a factor to preserve order.\n\n\n# axis label function\nstat_scales <- function(x){\n  if(mean(x, na.rm=T) < 1) d <- scales::percent(x, accuracy=1)\n  else d <- scales::dollar(x)\n  return(d)\n}\n\nblack_stats_chart <- black_stats %>% \n  mutate(color = ifelse(year<2000, 'green','gray'),\n    namefac = factor(name, levels = c(\"Income Quntile: Lowest\",\"Income Quntile: Second\" ,\n    \"Income Quntile: Middle\", \"Income Quntile: Fourth\",\"Income Quntile: Highest\",\n    \"Income Quntile: Top 5%\", \"wealth_family\",\"home_owner_pct\",\"loan_debt\",\"loan_debt_pct\")),\n    # rename values as needed\n    namefac = fct_recode(namefac, \"Family Wealth\"=\"wealth_family\",\n      \"% Homeowners\"=\"home_owner_pct\",\n      \"Student Loan Debt\"=\"loan_debt\",\"Families w/ Student Loans\"=\"loan_debt_pct\")\n  ) \n\n\n\nVisualize\nDisplay each of the indicators in its own facet. On a cursory glance, it becomes apparent that the year 2000 was an inflection point in most of the data.\n\n\np <- ggplot(black_stats_chart, aes(x=year, y=value, col=year<2000)) +\n  geom_line(size=1.2) +\n  geom_vline(xintercept=2000, col='red', size=1.2)+\n  scale_color_manual(values=c('gray','green'), guide=F)+\n  scale_y_continuous(labels = stat_scales, breaks=scales::pretty_breaks(n=3)) +\n  facet_wrap(vars(namefac), scales='free', nrow=4) +\n  theme_hc() +\n  theme(\n    title=element_text(size=16),\n  ) +\n  labs(title = \"2000: The Year Black Progress Stalled\", x='Year',y='')\np\n\n\n\n\nSave Image\n\n\n# This will save your most recent plot\nggsave(p,\n  filename = \"black_wealth_tt.png\",\n  width=8, height=7,\n  device = \"png\")\n\n\n\n\n\n\n",
+    "preview": "posts/2021-02-09-tidytuesday/black_wealth_tt.png",
+    "last_modified": "2021-02-16T21:02:03-08:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2021-01-19-tidy-tuesday/",
     "title": "Resizing Polygons by Population Using sf",
     "description": "January 19, 2021 \nTidy Tuesday submission.",

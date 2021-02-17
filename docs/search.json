@@ -6,14 +6,22 @@
       "description": "Some additional details about the blog",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2021-01-09T22:55:35-08:00"
+      "last_modified": "2021-02-16T21:04:29-08:00"
     },
     {
       "path": "index.html",
       "title": "Arthur Gailes",
       "author": [],
       "contents": "\nArthur Gailes\nStrong quantitative researcher who impacts policy through insightful data analyses, crafting interactive visuals to translate complex data sets into digestible mediums. Creative problem solver and cross-functional collaborator with drive to uncover trends and truths hidden among datasets. Highly proficient programmer fluent in R, Python, and SQL. Possess ancillary skills in writing, training, public speaking, and management developed over early career.\nThis site will eventually host examples of my professional work.\nPublished Work\nInteractive Maps\nCalifornia Tax Credit Allocation Committee:\nUsed to allocate over $1 billion in annual California tax credits to affordable housing.\n2021 Opportunity Map\n2020 Opportunity Map\n2019 Opportunity Map\n\nBay Area Segreation Map\nCalifornia Opportunity map\nCited in legislation: 2019 California Senate Bill 50 (“CHAPTER 4.35. Equitable Communities Incentives”)\n\nCo-Author:\nBay Area Zoning Report: Characteristics of Exclusionary Communities\nMedia Coverage:\nBerkeley considers ending single-family zoning\n\n\nRacial Segregation in the San Francisco Bay Area\nPart 3: Measuring Segregation\nPart 4: The Harmful Effects of Segregation\nPart 5: Remedies, Solutions, and Targets\n\n",
-      "last_modified": "2021-02-12T21:13:34-08:00"
+      "last_modified": "2021-02-16T21:02:03-08:00"
+    },
+    {
+      "path": "tidytuesday.html",
+      "title": "Tidy Tuesday Submissions",
+      "description": "A new article created using the Distill format.\n",
+      "author": [],
+      "contents": "\n\n\n\n",
+      "last_modified": "2021-02-16T21:02:30-08:00"
     }
   ],
   "collections": ["posts/posts.json"]
